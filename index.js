@@ -8,61 +8,39 @@ const generateMarkdown = require('./utils/generateMarkdown.js')
 
 const data = [
     {
-        type: 'input',
-        message: 'What would you like to title your project?',
-        name: 'title',
-    },
-    {
-        type: 'input',
-        message: 'Please describe your project.',
-        name: 'description',
-    },
-    {
-        type: 'input',
-        message: 'Please share installation instructions.',
-        name: 'install',
-    },
-    {
-        type: 'input',
-        message: 'Please share usage instructions.',
-        name: 'usage',
-    },
-    {
         type: 'list',
-        message: 'Which license would you like to use?',
-        name: 'license',
-        choices: ['MIT', 'Apache 2.0', 'Mozilla Public License 2.0']
-    },
-    {
-        type: 'input',
-        message: 'Please share instructions for contributors.',
-        name: 'contributors',
-    },
-    {
-        type: 'input',
-        message: 'Please share test instructions.',
-        name: 'test',
-    },
-    {
-        type: 'input',
-        message: 'What is your GitHub username?',
-        name: 'github',
-    },
-    {
-        type: 'input',
-        message: 'What is your email address?',
-        name: 'email',
+        message: 'What would you like to do?',
+        name: 'choices',
+        choices: [
+        'View All Departments', 
+        'Add A Department',
+        'View All Roles', 
+        'Add A Role',
+        'View All Employees',
+        'Add An Employee',
+        'Update An Employee Role'
+    ]
     }
 ]
 
 
 
-// TODO: Create a function to initialize app, so when someone types node "employees.js" to start it up, put something in there to get the first function to get it going
-function init() {
-    inquirer.prompt(data).then((answers) => {
-        const markdown = generateMarkdown(answers);
-        writeToFile('sample.md', markdown);
-    });
-}
-// Function call to initialize app (this is done)
-init();
+// write a GET function to show all departments
+
+// write a GET function to show all roles
+// job title, role id, department, salary
+
+// write a GET function to show all employees
+// first name, last name, job title, department, salary, manager
+
+// write a POST function to add a department
+// prompt for dept name
+
+// write a POST function to add a role
+// prompt for role name, salary, department
+
+// write a POST function to add an employee
+// prompt for first name, last name, role, and manager
+
+// write a PUT function to update an employee role
+// prompt to select an employee and update their new role
