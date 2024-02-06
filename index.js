@@ -55,8 +55,9 @@ async function getChoice() {
         })
     }
     if (choiceName.choices == 'Add A Department') {
-        // need to prompt for department name
-    db.query("INSERT INTO department(name) VALUES.......",
+        // get list oif departments
+        // get user to choose from list
+    db.query("INSERT INTO department(name) VALUES(?)", deptName,
     (err, data) => {
             console.table(data)
             getChoice()
