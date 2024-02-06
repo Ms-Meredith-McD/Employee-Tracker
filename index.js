@@ -31,18 +31,32 @@ function init() {
 // write a GET function to show all departments
 async function getChoice() {
     const choiceName = await inquirer.prompt(info)
-    if (choiceName.choices == 'View All Departments'){
-    db.query("SELECT * FROM department", (err, data) => {
-        console.table(data)
-        getChoice()
-    })}  
+    if (choiceName.choices == 'View All Departments') {
+        db.query("SELECT * FROM department", (err, data) => {
+            console.table(data)
+            getChoice()
+        })
+    }
+    if (choiceName.choices == 'View All Roles') {
+        db.query("SELECT * FROM role JOIN department on role.department_id = department.id", (err, data) => {
+            console.table(data)
+            getChoice()
+        })
+    }
+    if (choiceName.choices == 'View All Employees') {
+        db.query("SELECT * FROM role JOIN department on role.department_id = department.id JOIN employee on employee.role_id = role.id", (err, data) => {
+            console.table(data)
+            getChoice()
+        })
+    }
 }
 
-// write a GET function to show all roles
-// job title, role id, department, salary
-// join with department table, foreign key is department ID
+
+
+
 // SELECT * FROM role
 // JOIN department on role.department_id = department.id
+// JOIN employee on role.employee_id = employee.id
 
 // write a GET function to show all employees
 // first name, last name, job title, department, salary, manager
