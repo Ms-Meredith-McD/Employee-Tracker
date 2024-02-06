@@ -28,7 +28,7 @@ function init() {
     getChoice()
 }
 
-// write a GET function to show all departments
+// inquirer function with *if* for all choices plus appropriate query then circle back to getChoice() again
 async function getChoice() {
     const choiceName = await inquirer.prompt(info)
     if (choiceName.choices == 'View All Departments') {
@@ -44,35 +44,50 @@ async function getChoice() {
         })
     }
     if (choiceName.choices == 'View All Employees') {
-        db.query("SELECT * FROM role JOIN department on role.department_id = department.id JOIN employee on employee.role_id = role.id", (err, data) => {
+        db.query(`SELECT e.id, e.first_name, e.last_name, role.title, department.name as department, role.salary, CONCAT(m.first_name, ' ', m.last_name) as "manager" 
+        FROM employee as e
+        JOIN role ON e.role_id = role.id 
+        JOIN department ON role.department_id = department.id
+        LEFT JOIN employee as m
+        ON m.id = e.manager_id`, (err, data) => {
             console.table(data)
             getChoice()
         })
     }
+    if (choiceName.choices == 'Add A Department') {
+        // need to prompt for department name
+    db.query("INSERT INTO department(name) VALUES.......",
+    (err, data) => {
+            console.table(data)
+            getChoice()
+        })
+    }
+    if (choiceName.choices == 'Add A Role') {
+        // need to prompt for title, salary, department_id/department name
+        db.query("INSERT INTO role (title, salary, department_id) VALUES.......",
+        (err, data) => {
+                console.table(data)
+                getChoice()
+            })
+    }
+    if (choiceName.choices == 'Add An Employee') {
+        // need to prompt for first name, last name, role, and manager
+        db.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES.......",
+        (err, data) => {
+                console.table(data)
+                getChoice()
+            })
+    }
+    if (choiceName.choices == 'Update An Employee Role') {
+        // need to prompt for first name, last name, role
+        // get employee database, select by ID, then update?
+        db.query("UPDATE employee (first_name, last_name, role) VALUES.......",
+        (err, data) => {
+                console.table(data)
+                getChoice()
+            })
+    }
 }
 
-
-
-
-// SELECT * FROM role
-// JOIN department on role.department_id = department.id
-// JOIN employee on role.employee_id = employee.id
-
-// write a GET function to show all employees
-// first name, last name, job title, department, salary, manager
-// join with role table and department table, foreign keys are department ID and role ID
-
-// write a POST function to add a department
-// prompt for dept name
-
-// write a POST function to add a role
-// prompt for role name, salary, department
-
-// write a POST function to add an employee
-// prompt for first name, last name, role, and manager
-
-// write a PUT function to update an employee role
-// prompt to select an employee and update their new role
-//GET the employee database, select employee by ID, (type in new role or select?)
 
 init()
