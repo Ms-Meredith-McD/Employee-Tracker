@@ -24,6 +24,7 @@ const info = [
 
 
 function init() {
+    console.log('Welcome to the EMS "Employee Management System" MEM 2024')
     getChoice()
 }
 
