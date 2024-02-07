@@ -88,20 +88,124 @@ async function getChoice() {
         });
     }
     if (choiceName.choices == 'Add A Role') {
-        // need to prompt for title, salary, department_id/department name
-        db.query("INSERT INTO role (title, salary, department_id) VALUES.......",
-        (err, data) => {
-                console.table(data)
-                getChoice()
-            })
+        db.query('SELECT department.id, department.name FROM department', (err, departments) => {
+            if (err) throw err;
+    
+          // Retrieve the existing departments
+            const existingDepartments = departments.map((row) => row.name);
+            
+    
+          // Prompt the user to enter the details of the new role
+            async function promptUser() {
+            const answers = await inquirer.prompt([
+                {
+                type: 'input',
+                name: 'newRoleTitle',
+                message: 'Enter the title of the new role:',
+                },
+                {
+                type: 'input',
+                name: 'newRoleSalary',
+                message: 'Enter the salary for the new role:',
+            },
+            {
+                type: 'list',
+                name: 'newRoleDepartment',
+                message: 'Select the department for the new role:',
+                choices: existingDepartments,
+            },
+            ]);
+    
+            const newRoleTitle = answers.newRoleTitle;
+            const newRoleSalary = answers.newRoleSalary;
+            const newRoleDepartment = answers.newRoleDepartment;
+    
+            console.log(`${newRoleTitle} added`);
+    
+            // Get the department ID for the selected department
+            const departmentId = departments.find((row) => row.name === newRoleDepartment).id;
+    
+            // Insert the new role into the role table
+            db.query(
+            'INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)',
+            [newRoleTitle, newRoleSalary, departmentId],
+            (err, result) => {
+                if (err) throw err;
+    
+                console.log('New role added successfully!');
+                getChoice();
+            }
+            );
+        }
+    
+        promptUser();
+        });
     }
     if (choiceName.choices == 'Add An Employee') {
-        // need to prompt for first name, last name, role, and manager
-        db.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES.......",
-        (err, data) => {
-                console.table(data)
-                getChoice()
-            })
+        db.query('SELECT role.id, role.title FROM role', (err, roles) => {
+        if (err) throw err;
+    
+          // Retrieve the existing roles
+        const existingRoles = roles.map((row) => row.title);
+        console.log('Existing Roles:', existingRoles);
+    
+          // Prompt the user to enter the details of the new employee
+        async function promptUser() {
+            const answers = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'newEmployeeFirstName',
+                message: 'Enter the first name of the new employee:',
+            },
+            {
+                type: 'input',
+                name: 'newEmployeeLastName',
+                message: 'Enter the last name of the new employee:',
+            },
+            {
+                type: 'list',
+                name: 'newEmployeeRole',
+                message: 'Select the role for the new employee:',
+                choices: existingRoles,
+            },
+            {
+                type: 'input',
+                name: 'newEmployeeManagerId',
+                message: 'Enter the manager ID for the new employee (leave blank if none):',
+            },
+            ]);
+    
+            const newEmployeeFirstName = answers.newEmployeeFirstName;
+            const newEmployeeLastName = answers.newEmployeeLastName;
+            const newEmployeeRole = answers.newEmployeeRole;
+            const newEmployeeManagerId = answers.newEmployeeManagerId || null;
+    
+            console.log(`${newEmployeeFirstName} ${newEmployeeLastName} added`);
+    
+            // Get the role ID for the selected role
+            const role = roles.find((row) => row.title === newEmployeeRole);
+            if (!role) {
+            console.log('Invalid role selected');
+            getChoice();
+            return;
+            }
+            const roleId = role.id;
+    
+            // Insert the new employee into the employee table
+            db.query(
+            'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
+            [newEmployeeFirstName, newEmployeeLastName, roleId, newEmployeeManagerId],
+            (err, result) => {
+                if (err) throw err;
+    
+                console.log('New employee added successfully!');
+                getChoice();
+            }
+            );
+}
+    
+        promptUser();
+        });
     }
     if (choiceName.choices == 'Update An Employee Role') {
         // need to prompt for first name, last name, role
