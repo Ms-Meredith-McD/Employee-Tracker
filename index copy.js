@@ -3,55 +3,6 @@ const inquirer = require('inquirer');
 const db = require("./config/connect")
 const prompt = require('inquirer').createPromptModule();
 
-// This function will run a SELECT statement based oiff of what is provided in the argument
-function getList(dataset){
-    if( dataset === "employees" ){
-        // execute mysql query for all employees and return the data
-    }
-}
-
-// This function takes an array of choices and tells inquirer to ask the user to choose 
-// from that list. It returns the id of whatever option was selcted
-function displayList(listOfChoices){
-    
-}
-
-
-// This function will take any data you give it and render it with console.table()
-function displayTable(data){
-
-}
-
-
-
-async function viewAllEmployees(){
-    const employees = await getList("employees")
-    displayTable(employees)
-}
-
-async function addNewEmployee(){
-    // ask for name 
-    // ask for email 
-    const departments = await getList("departments")
-    const chosenDepartment = displayList(departments)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // User choices
 
 const info = [
@@ -93,7 +44,12 @@ async function getChoice() {
         })
     }
     if (choiceName.choices == 'View All Employees') {
-        db.query("SELECT a.id AS id, a.first_name AS first_name, a.last_name AS last_name, `role`.title AS title, department.name AS department_name, `role`.salary AS salary, CONCAT(b.first_name, ' ', b.last_name) AS manager_name FROM employee a JOIN `role` ON a.role_id = `role`.id JOIN department ON `role`.department_id = department.id LEFT JOIN employee b ON a.manager_id = b.id;", (err, data) => {
+        db.query(`SELECT e.id, e.first_name, e.last_name, role.title, department.name as department, role.salary, CONCAT(m.first_name, ' ', m.last_name) as "manager" 
+        FROM employee as e
+        JOIN role ON e.role_id = role.id 
+        JOIN department ON role.department_id = department.id
+        LEFT JOIN employee as m
+        ON m.id = e.manager_id`, (err, data) => {
             console.table(data)
             getChoice()
         })
