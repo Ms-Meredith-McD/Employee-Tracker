@@ -1,7 +1,7 @@
 // Packages needed for the application
 const inquirer = require('inquirer');
-const fs = require('fs');
 const db = require("./config/connect")
+const prompt = require('inquirer').createPromptModule();
 
 // User choices
 
@@ -55,13 +55,37 @@ async function getChoice() {
         })
     }
     if (choiceName.choices == 'Add A Department') {
-        // get list oif departments
-        // get user to choose from list
-    db.query("INSERT INTO department(name) VALUES(?)", deptName,
-    (err, data) => {
-            console.table(data)
-            getChoice()
-        })
+        db.query('SELECT department.name FROM department', (err, departments) => {
+        if (err) throw err;
+    
+          // Retrieve the existing departments
+        const existingDepartments = departments.map((row) => row.name);
+        console.log('Existing Departments:', existingDepartments);
+    
+          // Prompt the user to enter the name of the new department
+        async function promptUser() {
+            const answers = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'newDepartmentName',
+                message: 'Enter the name of the new department:',
+            },
+            ]);
+    
+            const newDepartmentName = answers.newDepartmentName;
+            console.log(`${newDepartmentName} added`);
+    
+            // Insert the new department into the department table
+            db.query('INSERT INTO department (name) VALUES (?)', [newDepartmentName], (err, result) => {
+            if (err) throw err;
+    
+            console.log('New department added successfully!');
+            getChoice();
+            });
+        }
+    
+        promptUser();
+        });
     }
     if (choiceName.choices == 'Add A Role') {
         // need to prompt for title, salary, department_id/department name
