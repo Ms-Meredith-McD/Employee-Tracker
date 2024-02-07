@@ -142,14 +142,25 @@ async function getChoice() {
         });
     }
     if (choiceName.choices == 'Add An Employee') {
-        db.query('SELECT role.id, role.title FROM role', (err, roles) => {
+        db.query('SELECT role.id, role.title FROM employee_db.role', (err, roles) => {
         if (err) throw err;
-    
+        
           // Retrieve the existing roles
-        const existingRoles = roles.map((row) => row.title);
+        const existingRoles = roles.map(role => ({ value: role.id, name: role.title }));
+        
+          // Retrieve the existing managers
+        db.query("SELECT id, CONCAT(first_name, ' ', last_name) AS manager_name FROM company_db.employee WHERE manager_id IS NULL", (err, managers) => {
+            console.table(managers)
+            if (err) throw err;
+        })
+    
+        const existingManagers = managers.map(manager => ({ value: manager.id, name: manager.manager_name }))
+        });
     
           // Prompt the user to enter the details of the new employee
         async function promptUser() {
+            
+            const existingRoles = roles.map(role => ({ value: role.id, name: role.title }));
             const answers = await inquirer.prompt([
             {
                 type: 'input',
@@ -168,10 +179,11 @@ async function getChoice() {
                 choices: existingRoles,
             },
             {
-                type: 'input',
+                type: 'list',
                 name: 'newEmployeeManagerId',
-                message: 'Enter the manager ID for the new employee (leave blank if none):',
-            },
+                message: 'Select the manager ID for the new employee (optional):',
+                choices: existingManagers,
+            }
             ]);
     
             const newEmployeeFirstName = answers.newEmployeeFirstName;
@@ -184,37 +196,38 @@ async function getChoice() {
             // Get the role ID for the selected role
             const role = roles.find((row) => row.title === newEmployeeRole);
             if (!role) {
-            console.log('Invalid role selected');
-            getChoice();
-            return;
+                console.log('Invalid role selected');
+                getChoice();
+                return;
             }
             const roleId = role.id;
     
             // Insert the new employee into the employee table
             db.query(
-            'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
-            [newEmployeeFirstName, newEmployeeLastName, roleId, newEmployeeManagerId],
-            (err, result) => {
+                'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
+                [newEmployeeFirstName, newEmployeeLastName, roleId, newEmployeeManagerId],
+                (err, result) => {
                 if (err) throw err;
     
                 console.log('New employee added successfully!');
                 getChoice();
-            }
+                }
             );
-}
+            }
     
-        promptUser();
-        });
-    }
-    if (choiceName.choices == 'Update An Employee Role') {
+            promptUser();
+        
+        
+        }
+    // if (choiceName.choices == 'Update An Employee Role') {
         // need to prompt for first name, last name, role
         // get employee database, select by ID, then update?
-        db.query("UPDATE employee (first_name, last_name, role) VALUES.......",
-        (err, data) => {
-                console.table(data)
-                getChoice()
-            })
-    }
+//         db.query("UPDATE employee (first_name, last_name, role) VALUES.......",
+//         (err, data) => {
+//                 console.table(data)
+//                 getChoice()
+//             })
+//     }
 }
 
 
