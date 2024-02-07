@@ -1,29 +1,32 @@
 INSERT INTO department (name)
-VALUES  ('Finance'),
-        ('IT'),
+VALUES  ('IT'),
         ('Human Resources'),
-        ('Executive Leadership');
+        ('Finance'),
+        ('Marketing');
+        
 
 INSERT INTO role (title, salary, department_id)
-VALUES  ('Accountant', 80000, 1),
-        ('Developer', 100000, 2),
-        ('HR Director', 95000, 3),
-        ('CTO', 200000, 4),
-        ('CEO', 200000, 4),
-        ('CFO', 200000, 4);
-
-
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES  ('Sally', 'Johnson', 4, null),
-        ('Henry', 'Miller', 5, null),
-        ('Margaret', 'Samuels', 6, null);
+VALUES  ('IT Manager', 180000, 1),
+        ('Developer', 100000, 1),
+        ('HR Director', 100000, 2),
+        ('HR Generalist', 75000, 2),
+        ('Accounting Manager', 120000, 3),
+        ('Accountant', 80000, 3),
+        ('Marketing Manager', 100000, 4),
+        ('Graphic Designer', 80000, 4);
 
 
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES  ('Joe', 'London', 1, 3),     
-        ('Mary', 'Jones', 3, 2),
-        ('Mitch', 'Lawson', 2, 4);
+VALUES  ('Sally', 'Johnson', 1, null),
+        ('Joe', 'London', 2, 1),    
+        ('Henry', 'Miller', 3, null),
+        ('Mary', 'Jones', 4, 2),
+        ('Margaret', 'Samuels', 5, null),
+        ('Mitch', 'Lawson', 6, 3),
+        ('Francine', 'Styles', 7, null),
+        ('Kris', 'McEnroe', 8, 4);
+
 
 
 
