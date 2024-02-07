@@ -147,7 +147,6 @@ async function getChoice() {
     
           // Retrieve the existing roles
         const existingRoles = roles.map((row) => row.title);
-        console.log('Existing Roles:', existingRoles);
     
           // Prompt the user to enter the details of the new employee
         async function promptUser() {
