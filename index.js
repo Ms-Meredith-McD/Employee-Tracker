@@ -1,4 +1,4 @@
-const mainMenu = require('./lib/mainMenu.js');
+const mainMenu = require('./lib/getChoices.js');
 
 console.log(`
 
