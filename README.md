@@ -1,4 +1,4 @@
-Employee-Tracker
+# Employee Tracker
 
 ## Description
 The goal of the Employee-Tracker is to create an interface that allows a non-developer to easily view and interact with employee data in a content management system(CMS).  This is a command-line application built from scratch to manage a company's employee database.  This application demonstrates my knowledge of using JavaScript, Express, NodeJS, Inquirer, and MySQL.
