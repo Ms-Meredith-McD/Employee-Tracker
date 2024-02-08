@@ -18,7 +18,7 @@ SELECT
     END AS DEPARTMENT,
     CASE
         -- null -- display **MANAGER**
-        WHEN employee.manager_id IS NULL THEN '<IS A MANAGER>'
+        WHEN employee.manager_id IS NULL THEN '<NONE>'
         -- update when manager is null
         WHEN manager.id IS NULL THEN '**NEEDS UPDATING**'
         --  concat together manager's first name and last name 
