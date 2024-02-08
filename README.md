@@ -27,6 +27,11 @@ I thank folks in my EdX University of Minnesota Fullstack Bootcamp class for hel
 6. Exit mysql and type "node index.js"
 
 ## Screenshot
+![Employee Tracker Screenshot](image.png)
+
 
 
 ## Walthrough Video
+View on Screencastify: https://app.screencastify.com/v3/watch/F1ZUTCplPbfjzC5vGGU1
+
+View on Google Drive: https://drive.google.com/file/d/1gHtq21iIU98RtRYC0abZhjfkNfAU5sNZ/view
