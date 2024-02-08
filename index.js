@@ -1,4 +1,4 @@
-const mainMenu = require('./lib/getChoices.js');
+const mainMenu = require('./lib/mainMenu.js');
 
 console.log(`
 
@@ -20,4 +20,4 @@ console.log(`
 `);
 
 
-getChoices();
+mainMenu();
